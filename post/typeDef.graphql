@@ -1,0 +1,9 @@
+"""
+A forum post which can have a parent post in the case of a thread
+"""
+type Post {
+  id: ID!
+
+  "The title of the post"
+  title: String
+}

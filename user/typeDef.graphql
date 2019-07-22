@@ -1,0 +1,12 @@
+"""
+A user of the application
+"""
+type User {
+  id: ID!
+
+  "The user's display name"
+  name: String!
+
+  "The main location of the user"
+  location: String
+}

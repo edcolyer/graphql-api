@@ -8,14 +8,26 @@ function loggingMiddleware(req, res, next) {
   next();
 }
 
-// Read the schema.graphql file
-const graphqlSchema = fs.readFileSync('schema.graphql').toString();
+// Construct the GraphQL schema string
+// Note: seems common to have typeDef.js files (which you can just require or
+// import)
+const Post = fs.readFileSync('./post/typeDef.graphql').toString();
+const User = fs.readFileSync('./user/typeDef.graphql').toString();
+const Query = fs.readFileSync('./query/typeDef.graphql').toString();
+const typeDef = [Query, Post, User];
+const graphqlSchema = typeDef.join('\n');
 
-// Construct a schema, using GraphQL schema language
+// Build the schema
 const schema = buildSchema(graphqlSchema);
 
-// Get the `root`, which contains a resolver function for each API endpoint
-const root = require('./root');
+// Get resolvers
+const userResolvers = require('./user/resolvers');
+
+// Create the `root`, which contains a resolver function for each API "endpoint"
+// TODO: is there a better way for this to be split up?
+const root = {
+  ...userResolvers
+};
 
 const app = express();
 app.use(loggingMiddleware);
