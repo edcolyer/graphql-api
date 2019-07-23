@@ -1,0 +1,4 @@
+type Mutation {
+  "Create a user in the database"
+  createUser(params: UserInput): User
+}

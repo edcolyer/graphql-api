@@ -10,3 +10,9 @@ type User {
   "The main location of the user"
   location: String
 }
+
+input UserInput {
+  name: String
+
+  location: String
+}

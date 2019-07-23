@@ -1,0 +1,14 @@
+CREATE TABLE Users (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(50) UNIQUE,
+  location VARCHAR(80)
+);
+
+CREATE TABLE Posts (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(100),
+  view_count INTEGER NOT NULL DEFAULT 0,
+  parent_id INTEGER NOT NULL,
+
+  FOREIGN KEY (parent_id) REFERENCES Posts (id) ON DELETE CASCADE
+);

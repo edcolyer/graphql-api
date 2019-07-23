@@ -4,7 +4,7 @@ const { buildSchema } = require('graphql');
 const fs = require('fs');
 
 function loggingMiddleware(req, res, next) {
-  console.log('ip:', req.ip);
+  // TODO: do something with this?
   next();
 }
 
@@ -14,7 +14,8 @@ function loggingMiddleware(req, res, next) {
 const Post = fs.readFileSync('./post/typeDef.graphql').toString();
 const User = fs.readFileSync('./user/typeDef.graphql').toString();
 const Query = fs.readFileSync('./query/typeDef.graphql').toString();
-const typeDef = [Query, Post, User];
+const Mutation = fs.readFileSync('./mutation/typeDef.graphql').toString();
+const typeDef = [Query, Mutation, Post, User];
 const graphqlSchema = typeDef.join('\n');
 
 // Build the schema

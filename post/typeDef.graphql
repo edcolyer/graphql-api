@@ -6,4 +6,13 @@ type Post {
 
   "The title of the post"
   title: String
+
+  "The number of views"
+  viewCount: Int!
+
+  "The parent post (if any)"
+  parent: Post
+
+  "The user who posted"
+  ownerUser: User
 }

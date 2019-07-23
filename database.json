@@ -1,0 +1,18 @@
+{
+  "local-setup": {
+    "driver": "pg",
+    "host": "localhost",
+    "user": "postgres",
+    "password": ""
+  },
+
+  "local": {
+    "driver": "pg",
+    "host": "localhost",
+    "database": "forum",
+    "user": "postgres",
+    "password": ""
+  },
+
+  "defaultEnv": "local"
+}
