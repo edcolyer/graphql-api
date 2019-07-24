@@ -12,7 +12,7 @@ type User {
 }
 
 input UserInput {
-  name: String
+  name: String!
 
   location: String
 }

@@ -43,3 +43,7 @@ I really like this syntax for destructuring parameters from objects in functions
     console.log('Bar:', bar);
   }
 ```
+
+##### Knex
+
+Knex is pretty cool for SQL queries. I definitely see merit in it for building queries *dynamically*. I think pg-promise is easier to use for executing queries, transactions, and so on, however. I also think there is merit in dealing with pure SQL in lots of situations, but using something like [this ES6 SQL template tag](https://www.npmjs.com/package/sql-tag) would be useful. A combination of Knex and pg-promise, with SQL template tag, would be ideal.

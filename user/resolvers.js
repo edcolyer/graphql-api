@@ -19,8 +19,8 @@ module.exports = {
    * @returns {User} The created user
    */
   createUser: function(args, req, info) {
-    const { params } = args;
-    const { name, location } = params;
+    const { input } = args;
+    const { name, location } = input;
 
     return userService.createUser({ name, location });
   }

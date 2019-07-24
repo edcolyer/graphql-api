@@ -23,11 +23,13 @@ const schema = buildSchema(graphqlSchema);
 
 // Get resolvers
 const userResolvers = require('./user/resolvers');
+const postResolvers = require('./post/resolvers');
 
 // Create the `root`, which contains a resolver function for each API "endpoint"
 // TODO: is there a better way for this to be split up?
 const root = {
-  ...userResolvers
+  ...userResolvers,
+  ...postResolvers
 };
 
 const app = express();

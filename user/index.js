@@ -5,8 +5,8 @@ const knex = require('../helpers/database');
  */
 async function createUser({ name, location }) {
   const data = await knex('users')
-    .returning('*')
-    .insert({ name, location });
+    .insert({ name, location })
+    .returning('*');
 
   return data[0];
 }
