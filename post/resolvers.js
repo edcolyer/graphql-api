@@ -1,7 +1,6 @@
 const postService = require('./index');
 
 module.exports = {
-
   Query: {
     /**
      * Return a specific post, given an ID.
@@ -14,6 +13,8 @@ module.exports = {
 
     /**
      * Return all parent posts.
+     * Note: if you were to do pagination, here is a great resource:
+     * https://www.apollographql.com/docs/react/features/pagination/
      */
     posts: (obj, args, context, info) => {
       return postService.getPosts();

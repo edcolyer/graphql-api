@@ -16,13 +16,11 @@ type User {
 
 input UserInput {
   name: String!
-
   location: String
 }
 
 extend type Query {
   user(id: ID!): User
-  users: [User!]!
 }
 
 extend type Mutation {

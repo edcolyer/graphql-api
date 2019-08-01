@@ -17,10 +17,10 @@ type Post {
   childPosts: [Post!]!
 
   "When the post was created (in UTC time)"
-  postedTimestamp: String!
+  postedTimestamp: DateTime!
 
   "When the post was edited, if applicable (in UTC time)"
-  editedTimestamp: String
+  editedTimestamp: DateTime
 
   "The user who posted"
   ownerUser: User

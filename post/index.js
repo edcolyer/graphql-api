@@ -95,11 +95,11 @@ async function getPosts() {
  * Update a post in the database.
  */
 async function updatePost(id, { title, content }) {
-  console.log(title, content);
   const post = await knex('posts')
     .update({
       title,
-      content
+      content,
+      edited_timestamp: knex.raw('CURRENT_TIMESTAMP')
     })
     .where({
       id

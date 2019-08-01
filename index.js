@@ -9,6 +9,8 @@ const typeDefs = require('./typeDefs');
 const resolvers = require('./resolvers');
 
 // Error handler
+// Note: Good resource for error handling: https://www.apollographql.com/docs/
+// apollo-server/features/errors/
 function formatError(error) {
   console.error(error);
   return error;

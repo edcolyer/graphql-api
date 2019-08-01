@@ -11,5 +11,9 @@ const root = gql`
   type Mutation {
     root: String
   }
+
+  scalar Date
+  scalar Time
+  scalar DateTime
 `;
 module.exports = [root, Post, User];
