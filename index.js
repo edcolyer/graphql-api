@@ -1,45 +1,38 @@
 const express = require('express');
-const graphqlHttp = require('express-graphql');
-const { buildSchema } = require('graphql');
-const fs = require('fs');
+const { ApolloServer } = require('apollo-server-express');
+const { express: voyagerMiddleware } = require('graphql-voyager/middleware');
 
-function loggingMiddleware(req, res, next) {
-  // TODO: do something with this?
-  next();
+// Get the typeDefs
+const typeDefs = require('./typeDefs');
+
+// Get the resolvers
+const resolvers = require('./resolvers');
+
+// Error handler
+function formatError(error) {
+  console.error(error);
+  return error;
 }
 
-// Construct the GraphQL schema string
-// Note: seems common to have typeDef.js files (which you can just require or
-// import)
-const Post = fs.readFileSync('./post/typeDef.graphql').toString();
-const User = fs.readFileSync('./user/typeDef.graphql').toString();
-const Query = fs.readFileSync('./query/typeDef.graphql').toString();
-const Mutation = fs.readFileSync('./mutation/typeDef.graphql').toString();
-const typeDef = [Query, Mutation, Post, User];
-const graphqlSchema = typeDef.join('\n');
+// Initialise Apollo Server
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
 
-// Build the schema
-const schema = buildSchema(graphqlSchema);
+  // Disable stack traces in production
+  // Note: I think this is automatically done if NODE_ENV is production, without
+  // this line of code
+  debug: process.env.NODE_ENV !== 'production',
 
-// Get resolvers
-const userResolvers = require('./user/resolvers');
-const postResolvers = require('./post/resolvers');
-
-// Create the `root`, which contains a resolver function for each API "endpoint"
-// TODO: is there a better way for this to be split up?
-const root = {
-  ...userResolvers,
-  ...postResolvers
-};
+  // Handle errors globally
+  formatError
+});
 
 const app = express();
-app.use(loggingMiddleware);
 
-app.use('/graphql', graphqlHttp({
-  schema,
-  rootValue: root,
-  graphiql: process.env.NODE_ENV !== 'production'
-}));
+server.applyMiddleware({ app });
+
+app.use('/voyager', voyagerMiddleware({ endpointUrl: '/graphql' }));
 
 app.listen(4000);
 console.log('Running a GraphQL API server at localhost:4000/graphql');

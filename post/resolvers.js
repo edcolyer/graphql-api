@@ -1,38 +1,54 @@
 const postService = require('./index');
 
 module.exports = {
-  /**
-   * Return a specific post, given an ID.
-   * @param {string} id - The ID of the post to query for
-   * @returns {Post} The requested post
-   */
-  post: (args, req, info) => {
-    const { id } = args;
 
-    return postService.getPost({ id });
+  Query: {
+    /**
+     * Return a specific post, given an ID.
+     */
+    post: (obj, args, context, info) => {
+      const { id } = args;
+
+      return postService.getPost({ id });
+    },
+
+    /**
+     * Return all parent posts.
+     */
+    posts: (obj, args, context, info) => {
+      return postService.getPosts();
+    }
   },
 
-  // TODO: `posts`
+  Mutation: {
+    /**
+     * Creates a post.
+     */
+    createPost: function(obj, args, context, info) {
+      const { input } = args;
+      const { title, content, parentId } = input;
+      // TODO: get user from decorated request
+      const userId = 1;
 
-  // TODO: `createPost`
-  /**
-   * Creates a post.
-   * @param {string} title - The title of the post
-   * @param {string} content - The post's content
-   * @param {number} [parentId] - The ID of the parent (if any)
-   * @returns {Post} The created post
-   */
-  createPost: function(args, req, info) {
-    console.log('Creating post');
-    const { input } = args;
-    const { title, content, parentId } = input;
-    // TODO: get user from decorated request
-    const userId = 1;
+      return postService.createPost({ title, content, parentId, userId });
+    },
 
-    return postService.createPost({ title, content, parentId, userId });
+    /**
+     * Updates a post.
+     */
+    updatePost: function(obj, args, context, info) {
+      const { id, patch } = args.input;
+
+      return postService.updatePost(id, patch);
+    },
+
+    /**
+     * Creates a post.
+     */
+    deletePost: function(obj, args, context, info) {
+      const { id } = args;
+
+      return postService.deletePost(id);
+    }
   }
-
-  // TODO: `updatePost`
-
-  // TODO: `deletePost`
 };

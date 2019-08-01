@@ -14,7 +14,7 @@ type Post {
   viewCount: Int!
 
   "Child posts of this post"
-  childPosts: [Post]!
+  childPosts: [Post!]!
 
   "When the post was created (in UTC time)"
   postedTimestamp: String!
@@ -46,4 +46,20 @@ input PostUpdateInput {
 input PostPatch {
   title: String
   content: String
+}
+
+extend type Query {
+  post(id: ID!): Post
+  posts: [Post!]!
+}
+
+extend type Mutation {
+  "Create a post"
+  createPost(input: PostInput!): Post
+
+  "Update a post's details"
+  updatePost(input: PostUpdateInput!): Post
+
+  "Delete a post"
+  deletePost(id: ID!): Post
 }

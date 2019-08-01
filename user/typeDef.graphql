@@ -9,10 +9,23 @@ type User {
 
   "The main location of the user"
   location: String
+
+  "The posts a user has made"
+  posts: [Post!]!
 }
 
 input UserInput {
   name: String!
 
   location: String
+}
+
+extend type Query {
+  user(id: ID!): User
+  users: [User!]!
+}
+
+extend type Mutation {
+  "Create a user"
+  createUser(input: UserInput!): User
 }

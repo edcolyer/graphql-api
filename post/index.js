@@ -14,6 +14,32 @@ async function createPost({ title, content, parentId, userId }) {
 }
 
 /**
+ * Delete a post from the database.
+ */
+async function deletePost(id) {
+  const childPosts = await knex('posts')
+    .select('*')
+    .where({
+      parent_id: id
+    });
+
+  const posts = await knex('posts')
+    .delete()
+    .where({
+      id
+    })
+    .returning('*');
+
+  if (posts.length < 1) {
+    // No post found
+    throw new Error('Post does not exist');
+  }
+  posts[0].childPosts = childPosts;
+
+  return camelize(posts[0]);
+}
+
+/**
  * Fetch a post from the database.
  */
 async function getPost({ id }) {
@@ -37,7 +63,56 @@ async function getPost({ id }) {
   return camelize(post);
 }
 
+/**
+ * Fetch a list of parent posts from the database.
+ */
+async function getPosts() {
+  // TODO: implement pagination
+  const posts = await knex('posts')
+    .select('*')
+    .where({
+      parent_id: null
+    });
+
+  const ownerUsers = await knex('users')
+    .select('*')
+    .distinct()
+    .whereIn('id', posts.map(p => p.owner_user_id));
+
+  // Map users to posts
+  const usersMap = {};
+  for (const u of ownerUsers) {
+    usersMap[u.id] = u;
+  }
+  for (const p of posts) {
+    p.ownerUser = usersMap[p.owner_user_id];
+  }
+
+  return camelize(posts);
+}
+
+/**
+ * Update a post in the database.
+ */
+async function updatePost(id, { title, content }) {
+  console.log(title, content);
+  const post = await knex('posts')
+    .update({
+      title,
+      content
+    })
+    .where({
+      id
+    })
+    .returning('*');
+
+  return camelize(post[0]);
+}
+
 module.exports = {
   createPost,
-  getPost
+  deletePost,
+  getPost,
+  getPosts,
+  updatePost
 };
